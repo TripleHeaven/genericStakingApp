@@ -7,6 +7,7 @@ import {
 } from "../abis/Staking.json";
 import { useConnectStore } from "./useConnectStore";
 import { defineStore, storeToRefs } from "pinia";
+import { createToaster } from "@meforma/vue-toaster";
 import {
   contrAbiT,
   contractAbir,
@@ -123,6 +124,16 @@ export const useContractStore = defineStore("fixed", {
     },
 
     async stake(amount: string) {
+      const toaster = createToaster({
+        position: "bottom",
+        dismissible: true,
+      });
+
+      if (amount.length < 1) {
+        toaster.error(`Enter correct amount!`);
+        return;
+      }
+
       const connect = useConnectStore();
 
       this.showLoader = true;
